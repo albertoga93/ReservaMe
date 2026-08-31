@@ -17,7 +17,7 @@ public class LineaReserva {
     @Column(name = "cantidad", nullable = false)
     private int cantidad;
 
-    @Column(name = "precio_unitario", nullable = false)
+    @Column(name = "precio_unitario",precision = 10, scale = 2, nullable = false)
     private BigDecimal precioUnitario;
 
     @ManyToOne
