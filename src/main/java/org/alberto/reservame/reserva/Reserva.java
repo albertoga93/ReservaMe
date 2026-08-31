@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import org.alberto.reservame.cliente.Cliente;
 import org.alberto.reservame.usuario.Usuario;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -140,5 +141,12 @@ public class Reserva {
     @PreUpdate
     protected void onUpdate(){
         this.fechaActualizacion = LocalDateTime.now();
+    }
+
+    //metodo para calcular el precio total de una reserva.
+    public BigDecimal getTotal(){
+        return lineasReserva.stream()
+                .map(linea -> linea.getTotal())
+                .reduce(BigDecimal.ZERO,(acumulado , total) -> acumulado.add(total));
     }
 }
