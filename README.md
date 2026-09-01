@@ -4,7 +4,7 @@
 
 El objetivo del proyecto es proporcionar una solución flexible que permita a los negocios gestionar su catálogo de productos y controlar las reservas realizadas por sus empleados.
 
-> 🚧 **Proyecto actualmente en desarrollo**
+> 🚧 **Proyecto actualmente en desarrollo** 
 
 ---
 
@@ -88,7 +88,7 @@ El proyecto se encuentra actualmente **en desarrollo**.
 
 * [x] Definición de los casos de uso
 * [x] Modelado de las principales entidades
-* [ ] DTOs
+* [x] DTOs
 * [ ] Repositorios
 * [ ] Servicios
 * [ ] Controladores / endpoints
