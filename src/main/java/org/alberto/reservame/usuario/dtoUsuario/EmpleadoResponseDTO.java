@@ -55,7 +55,7 @@ public class EmpleadoResponseDTO {
     }
 
     public void setActivo(boolean activo) {
-        activo = activo;
+        this.activo = activo;
     }
 
     public LocalDateTime getFechaCreacion() {

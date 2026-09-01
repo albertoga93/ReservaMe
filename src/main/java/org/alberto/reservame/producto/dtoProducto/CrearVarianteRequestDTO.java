@@ -8,10 +8,10 @@ import java.math.BigDecimal;
 
 public class CrearVarianteRequestDTO {
 
-    @NotBlank(message = "El nombre de la variante no puede estar vacio")
+    @NotBlank(message = "El nombre de la variante no puede estar vacío")
     private String nombre;
 
-    @NotNull(message = "La unidad de medida no puede estar vacia")
+    @NotNull(message = "La unidad de medida no puede estar vacía")
     private UnidadMedida unidadMedida;
 
     @Positive

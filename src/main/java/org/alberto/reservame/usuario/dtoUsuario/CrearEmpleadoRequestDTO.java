@@ -7,10 +7,10 @@ import jakarta.validation.constraints.Size;
 
 public class CrearEmpleadoRequestDTO {
 
-    @NotBlank(message = "El nombre del empleado no puede estar vacio")
+    @NotBlank(message = "El nombre del empleado no puede estar vacío")
     private String nombre;
 
-    @NotBlank(message = "El email del empleado no puede estar vacio")
+    @NotBlank(message = "El email del empleado no puede estar vacío")
     @Email(message = "El email no es valido")
     private String email;
 
@@ -18,11 +18,11 @@ public class CrearEmpleadoRequestDTO {
             min = 8,
             max = 15,
             message = "La contraseña debe tener entre 8 y 15 caracteres")
-    @NotBlank(message = "La contraseña no puede estar vacia")
+    @NotBlank(message = "La contraseña no puede estar vacía")
     private String password;
 
     @Size(min = 8, max = 15, message = "La contraseña debe tener entre 8 y 15 caracteres")
-    @NotBlank(message = "La contraseña no puede estar vacia")
+    @NotBlank(message = "La contraseña no puede estar vacía")
     private String confirmarPassword;
 
     public CrearEmpleadoRequestDTO(){
@@ -53,11 +53,11 @@ public class CrearEmpleadoRequestDTO {
         this.password = password;
     }
 
-    public String getPaswwor1() {
+    public String getConfirmarPassword() {
         return confirmarPassword;
     }
 
-    public void setPaswwor1(String paswwor1) {
+    public void setConfirmarPasword(String paswwor1) {
         this.confirmarPassword = paswwor1;
     }
 }

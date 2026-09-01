@@ -10,7 +10,7 @@ import java.util.List;
 
 public class CrearProductoRequestDTO {
 
-    @NotBlank(message = "El nombre del producto no puede estar vacio")
+    @NotBlank(message = "El nombre del producto no puede estar vacío")
     private String nombre;
 
     private String descripccion;
