@@ -1,4 +1,4 @@
-package org.alberto.reservame.usuario;
+package org.alberto.reservame.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
