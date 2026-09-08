@@ -6,11 +6,18 @@ public class LoginResponseDTO {
 
     private String token;
     private String nombre;
-    private Cargo rol;
+    private String rol;
 
 
     public LoginResponseDTO() {
     }
+
+    public LoginResponseDTO(String token, String nombre, String rol) {
+        this.nombre = nombre;
+        this.token = token;
+        this.rol = rol;
+    }
+
 
     public String getToken() {
         return token;
