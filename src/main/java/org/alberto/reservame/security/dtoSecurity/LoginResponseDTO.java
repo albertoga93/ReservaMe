@@ -35,11 +35,11 @@ public class LoginResponseDTO {
         this.nombre = nombre;
     }
 
-    public Cargo getRol() {
+    public String getRol() {
         return rol;
     }
 
-    public void setRol(Cargo rol) {
+    public void setRol(String rol) {
         this.rol = rol;
     }
 }
