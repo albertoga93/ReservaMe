@@ -13,7 +13,7 @@ public class CrearProductoRequestDTO {
     @NotBlank(message = "El nombre del producto no puede estar vacío")
     private String nombre;
 
-    private String descripccion;
+    private String descripcion;
     private String categoria;
 
     @NotEmpty(message = "Debe incluir al menos una variante")
@@ -31,12 +31,12 @@ public class CrearProductoRequestDTO {
         this.nombre = nombre;
     }
 
-    public String getDescripccion() {
-        return descripccion;
+    public String getDescripcion() {
+        return descripcion;
     }
 
     public void setDescripccion(String descripccion) {
-        this.descripccion = descripccion;
+        this.descripcion = descripccion;
     }
 
     public String getCategoria() {

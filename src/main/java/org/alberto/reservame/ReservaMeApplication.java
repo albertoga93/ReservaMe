@@ -8,16 +8,18 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class ReservaMeApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(ReservaMeApplication.class, args);
+       SpringApplication.run(ReservaMeApplication.class, args);
     }
 
 
-    /*
 
-    metodo para generar contraseñas encriptadas
+/*
+   // metodo para generar contraseñas encriptadas
     public static void main (String[] args) {
     BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-    System.out.println(encoder.encode("password123"));
+    System.out.println(encoder.encode("password456"));
       }
-     */
+
+ */
+
 }

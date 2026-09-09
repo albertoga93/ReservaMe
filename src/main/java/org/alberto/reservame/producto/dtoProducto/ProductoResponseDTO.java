@@ -17,6 +17,15 @@ public class ProductoResponseDTO {
 
     }
 
+    public ProductoResponseDTO(Long id, String nombre, String descripcion, String categoria, boolean activo, LocalDateTime fechaCreacion) {
+        this.id = id;
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.categoria = categoria;
+        this.activo = activo;
+        this.fechaCreacion = fechaCreacion;
+    }
+
     public Long getId() {
         return id;
     }

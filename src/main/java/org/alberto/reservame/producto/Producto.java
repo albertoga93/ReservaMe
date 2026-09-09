@@ -3,6 +3,7 @@ package org.alberto.reservame.producto;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -32,8 +33,8 @@ public class Producto {
     @Column(name ="fecha_actualizacion", nullable = false)
     private LocalDateTime fechaActualizacion;
 
-    @OneToMany(mappedBy = "producto")
-    List<VarianteProducto> variantesProducto;
+    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL)
+    private List<VarianteProducto> variantesProducto = new ArrayList<>();
 
 
     //constructor vacio para hibernate
