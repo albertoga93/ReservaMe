@@ -1,9 +1,8 @@
 package org.alberto.reservame.producto;
 
-import org.alberto.reservame.producto.dtoProducto.CrearProductoRequestDTO;
-import org.alberto.reservame.producto.dtoProducto.CrearVarianteRequestDTO;
-import org.alberto.reservame.producto.dtoProducto.ProductoResponseDTO;
-import org.alberto.reservame.producto.dtoProducto.VarianteResponseDTO;
+import org.alberto.reservame.exception.RecursoNoEncontradoException;
+import org.alberto.reservame.producto.dtoProducto.*;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -40,6 +39,49 @@ public class ProductoService {
                     producto);
 
             producto.getVariantesProducto().add(variante);
+        }
+
+        Producto productoGuardado = productoRepository.save(producto);
+
+        return toProductoDto(productoGuardado);
+
+    }
+
+
+    public ProductoResponseDTO editarProducto(Long id, EditarProductoRequestDTO dto){
+        Producto producto = productoRepository.findById(id).orElseThrow(() -> new RecursoNoEncontradoException("Producto no encontrado"));
+
+        if(dto.getNombre() == null
+        && dto.getActivo() == null
+        && dto.getCategoria() == null
+        && dto.getDescripcion() == null){
+            throw new IllegalArgumentException("Debe indicar almenos un campo a modificar");
+        }
+
+        if(dto.getNombre() != null && dto.getNombre().isBlank()){
+            throw new IllegalArgumentException("El nombre no puede estar vacio");
+        }
+
+        if(dto.getNombre() != null){
+            producto.setName(dto.getNombre());
+        }
+
+        if(dto.getDescripcion() != null){
+            producto.setDescripcion(dto.getDescripcion());
+        }
+
+        if(dto.getCategoria() != null){
+            producto.setCategoria(dto.getCategoria());
+        }
+
+        if(dto.getActivo() != null){
+            producto.setActivo(dto.getActivo());
+
+            if(!dto.getActivo()){
+                for(VarianteProducto variante : producto.getVariantesProducto()){
+                    variante.setActivo(false);
+                }
+            }
         }
 
         Producto productoGuardado = productoRepository.save(producto);

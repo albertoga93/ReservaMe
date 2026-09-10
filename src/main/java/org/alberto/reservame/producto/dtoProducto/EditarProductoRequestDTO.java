@@ -1,11 +1,9 @@
 package org.alberto.reservame.producto.dtoProducto;
 
-import jakarta.validation.constraints.NotBlank;
-
 public class EditarProductoRequestDTO {
 
     private String nombre;
-    private String descripccion;
+    private String descripcion;
     private String categoria;
     private Boolean activo;
 
@@ -21,12 +19,12 @@ public class EditarProductoRequestDTO {
         this.nombre = nombre;
     }
 
-    public String getDescripccion() {
-        return descripccion;
+    public String getDescripcion() {
+        return descripcion;
     }
 
-    public void setDescripccion(String descripccion) {
-        this.descripccion = descripccion;
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
     public String getCategoria() {
