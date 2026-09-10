@@ -40,4 +40,14 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
     }
 
+    @ExceptionHandler(UsuarioExistenteException.class)
+    public ResponseEntity<String> handleUsuarioExistente(UsuarioExistenteException e){
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+    }
+
+    @ExceptionHandler(PasswordException.class)
+    public ResponseEntity<String> handlePassword(PasswordException e){
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+    }
+
 }

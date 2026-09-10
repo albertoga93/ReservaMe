@@ -2,6 +2,7 @@ package org.alberto.reservame.usuario.dtoUsuario;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 
@@ -11,7 +12,10 @@ public class CrearEmpleadoRequestDTO {
     private String nombre;
 
     @NotBlank(message = "El email del empleado no puede estar vacío")
-    @Email(message = "El email no es valido")
+    @Pattern(
+            regexp = "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$",
+            message = "El email no tiene un formato válido"
+    )
     private String email;
 
     @Size(
@@ -21,8 +25,7 @@ public class CrearEmpleadoRequestDTO {
     @NotBlank(message = "La contraseña no puede estar vacía")
     private String password;
 
-    @Size(min = 8, max = 15, message = "La contraseña debe tener entre 8 y 15 caracteres")
-    @NotBlank(message = "La contraseña no puede estar vacía")
+
     private String confirmarPassword;
 
     public CrearEmpleadoRequestDTO(){

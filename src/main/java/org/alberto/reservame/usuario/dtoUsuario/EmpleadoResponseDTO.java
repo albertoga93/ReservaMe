@@ -10,12 +10,21 @@ public class EmpleadoResponseDTO {
     private Long id;
     private String nombre;
     private String email;
-    private Cargo rol;
+    private String rol;
     private boolean activo;
     private LocalDateTime fechaCreacion;
 
     public EmpleadoResponseDTO(){
 
+    }
+
+    public EmpleadoResponseDTO(Long id, String nombre, String email, String rol, boolean activo, LocalDateTime fechaCreacion) {
+        this.id = id;
+        this.nombre = nombre;
+        this.email = email;
+        this.rol = rol;
+        this.activo = activo;
+        this.fechaCreacion = fechaCreacion;
     }
 
     public Long getId() {
@@ -42,11 +51,11 @@ public class EmpleadoResponseDTO {
         this.email = email;
     }
 
-    public Cargo getRol() {
+    public String getRol() {
         return rol;
     }
 
-    public void setRol(Cargo rol) {
+    public void setRol(String rol) {
         this.rol = rol;
     }
 
