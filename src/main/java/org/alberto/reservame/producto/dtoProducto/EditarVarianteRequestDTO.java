@@ -1,15 +1,27 @@
 package org.alberto.reservame.producto.dtoProducto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import org.alberto.reservame.producto.UnidadMedida;
 
 import java.math.BigDecimal;
 
 public class EditarVarianteRequestDTO {
 
+    @NotBlank(message = "El nombre no puede estar vacío")
     private String nombre;
+
+    @NotNull(message = "La unidad de medida no puede estar vacía")
     private UnidadMedida unidadMedida;
+
+    @Positive(message = "El precio debe ser mayor de 0")
     private BigDecimal precio;
+
+    @PositiveOrZero(message = "El stock no puede ser negativo")
     private Integer stock;
+
     private Boolean activo;
 
     public EditarVarianteRequestDTO(){

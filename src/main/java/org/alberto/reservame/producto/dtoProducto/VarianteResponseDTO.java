@@ -22,7 +22,7 @@ public class VarianteResponseDTO {
 
     }
 
-    public VarianteResponseDTO(Long id, String nombre, UnidadMedida unidadMedida, String sku, BigDecimal precio, int stock, boolean activo, LocalDateTime fechaCreacion) {
+    public VarianteResponseDTO(Long id, String nombre, UnidadMedida unidadMedida, String sku, BigDecimal precio, int stock, boolean activo, LocalDateTime fechaCreacion,LocalDateTime fechaActualizacion) {
         this.id = id;
         this.nombre = nombre;
         this.unidadMedida = unidadMedida;
@@ -31,6 +31,7 @@ public class VarianteResponseDTO {
         this.stock = stock;
         this.activo = activo;
         this.fechaCreacion = fechaCreacion;
+        this.fechaActualizacion = fechaActualizacion;
     }
 
     public Long getId() {

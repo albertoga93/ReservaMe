@@ -1,11 +1,12 @@
 package org.alberto.reservame.producto;
 
+import org.alberto.reservame.exception.OperacionNoPermitidaException;
 import org.alberto.reservame.exception.RecursoNoEncontradoException;
 import org.alberto.reservame.producto.dtoProducto.*;
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -14,9 +15,11 @@ import java.util.UUID;
 public class ProductoService {
 
     private final ProductoRepository productoRepository;
+    private final VarianteRepository varianteRepository;
 
-    public ProductoService(ProductoRepository productoRepository) {
+    public ProductoService(ProductoRepository productoRepository, VarianteRepository varianteRepository) {
         this.productoRepository = productoRepository;
+        this.varianteRepository = varianteRepository;
     }
 
     public ProductoResponseDTO crearProducto(CrearProductoRequestDTO dto){
@@ -90,8 +93,79 @@ public class ProductoService {
 
     }
 
+    public VarianteResponseDTO crearVariante (Long id, CrearVarianteRequestDTO dto){
 
+        Producto producto = productoRepository.findById(id).orElseThrow(() -> new RecursoNoEncontradoException("Producto no encontrado"));
 
+        if(!producto.isActivo()) {
+            throw new OperacionNoPermitidaException("No se puede añadir una variante a un producto inactivo");
+        }
+
+        VarianteProducto variante = new VarianteProducto(
+                dto.getNombre(),
+                gererarSKU(),
+                dto.getUnidadMedida(),
+                dto.getPrecio(),
+                dto.getStock(),
+                producto
+        );
+
+        VarianteProducto varianteGuardada = varianteRepository.save(variante);
+
+        return toVarianteDto(varianteGuardada);
+
+    }
+
+    public VarianteResponseDTO editarVariante(EditarVarianteRequestDTO dto, Long id){
+        VarianteProducto variante = varianteRepository.findById(id).orElseThrow(()-> new RecursoNoEncontradoException("Variante no encontrada"));
+
+        if(dto.getNombre() == null
+        && dto.getUnidadMedida() == null
+        && dto.getPrecio() == null
+        && dto.getStock() == null
+        && dto.getActivo() == null){
+            throw new IllegalArgumentException("Debe indicar almenos un campo a modificar");
+        }
+
+        if(dto.getNombre() != null && dto.getNombre().isBlank()){
+            throw new IllegalArgumentException("El nombre no puede estar vacio");
+        }
+
+        if(dto.getNombre() != null){
+            variante.setName(dto.getNombre());
+        }
+        if(dto.getUnidadMedida() != null){
+            variante.setUnidadMedida(dto.getUnidadMedida());
+        }
+        if(dto.getPrecio() != null){
+            variante.setPrecio(dto.getPrecio());
+        }
+        if(dto.getStock()!= null){
+            variante.setStock(dto.getStock());
+        }
+        if(dto.getActivo() != null){
+            variante.setActivo(dto.getActivo());
+        }
+
+        VarianteProducto varianteGuardada = varianteRepository.save(variante);
+
+        return toVarianteDto(varianteGuardada);
+    }
+
+    public List<ProductoResponseDTO> listarProductos(String nombre, String categoria) {
+        List<Producto> productosList = productoRepository.findAll();
+
+        List<ProductoResponseDTO> existList = productosList.stream()
+                .filter(pr -> categoria == null ||
+                        (pr.getCategoria() != null &&
+                                pr.getCategoria().toLowerCase().contains(categoria.toLowerCase())))
+                .filter(pr -> nombre == null ||
+                        pr.getName().toLowerCase().contains(nombre.toLowerCase()))
+                .map(pr -> this.toProductoDto(pr))
+                .toList();
+
+        return existList;
+    }
 
 
     //metodo para generar los SKU
@@ -130,7 +204,8 @@ public class ProductoService {
                 variante.getPrecio(),
                 variante.getStock(),
                 variante.isActivo(),
-                variante.getFechaCreacion()
+                variante.getFechaCreacion(),
+                variante.getFechaActualizacion()
         );
         return dto;
     }
