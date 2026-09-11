@@ -8,6 +8,7 @@ import org.alberto.reservame.exception.OperacionNoPermitidaException;
 import org.alberto.reservame.exception.RecursoNoEncontradoException;
 import org.alberto.reservame.producto.VarianteProducto;
 import org.alberto.reservame.producto.VarianteRepository;
+import org.alberto.reservame.reserva.dtoReserva.ComprobarReservaResponseDTO;
 import org.alberto.reservame.reserva.dtoReserva.CrearReservaRequestDTO;
 import org.alberto.reservame.reserva.dtoReserva.DetalleReservaResponseDTO;
 import org.alberto.reservame.reserva.dtoReserva.LineaReservaRequestDTO;
@@ -92,6 +93,28 @@ public class ReservaService {
 
         return reservaMapper.toDetalleReservaResponseDTO(reservaGuardada);
     }
+
+
+    public ComprobarReservaResponseDTO comprobarReservaPublico(String codigoPublico){
+        if(codigoPublico.isBlank()){
+            throw new IllegalArgumentException("El código no puede estar vacío");
+        }
+
+        Reserva reserva = reservaRepository.findByIdPublico(codigoPublico.toUpperCase()).orElseThrow(() -> new RecursoNoEncontradoException("La reserva no existe"));
+
+        return reservaMapper.toComprobarReservaResponseDTO(reserva);
+    }
+
+
+    public DetalleReservaResponseDTO detalleReserva(Long id){
+        Reserva reserva = reservaRepository.findById(id).orElseThrow(() -> new RecursoNoEncontradoException("Reserva no encontrada"));
+        return reservaMapper.toDetalleReservaResponseDTO(reserva);
+    }
+
+
+
+
+
 
 
     private String generarCodigoPublico() {
