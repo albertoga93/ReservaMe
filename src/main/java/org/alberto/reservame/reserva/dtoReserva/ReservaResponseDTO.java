@@ -16,6 +16,14 @@ public class ReservaResponseDTO {
     public ReservaResponseDTO() {
     }
 
+    public ReservaResponseDTO(Long id, ClienteResponseDTO cliente, LocalDateTime fechaRecogida, Estado estado, int numeroLineas) {
+        this.id = id;
+        this.cliente = cliente;
+        this.fechaRecogida = fechaRecogida;
+        this.estado = estado;
+        this.numeroLineas = numeroLineas;
+    }
+
     public ClienteResponseDTO getCliente() {
         return cliente;
     }

@@ -21,6 +21,8 @@ public class DetalleReservaResponseDTO {
     public DetalleReservaResponseDTO() {
     }
 
+
+
     public Long getId() {
         return id;
     }

@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/usuarios")
 public class UsuarioController {
@@ -35,6 +37,12 @@ public class UsuarioController {
     @PatchMapping("/{id}/activar")
     public ResponseEntity<EmpleadoResponseDTO> activarEmpleado(@PathVariable Long id){
         return ResponseEntity.ok().body(usuarioService.activarEmpleado(id));
+    }
+
+    @PreAuthorize("hasRole('DUENO')")
+    @GetMapping()
+    public ResponseEntity<List<EmpleadoResponseDTO>> listarUsuarios(@RequestParam(required = false) Boolean activo){
+        return ResponseEntity.ok().body(usuarioService.listarUsuarios(activo));
     }
 
 

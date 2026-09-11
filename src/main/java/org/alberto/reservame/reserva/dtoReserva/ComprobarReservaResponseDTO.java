@@ -12,6 +12,11 @@ public class ComprobarReservaResponseDTO {
     public ComprobarReservaResponseDTO() {
     }
 
+    public ComprobarReservaResponseDTO(Estado estado, LocalDateTime fechaRecogida) {
+        this.estado = estado;
+        this.fechaRecogida = fechaRecogida;
+    }
+
     public Estado getEstado() {
         return estado;
     }

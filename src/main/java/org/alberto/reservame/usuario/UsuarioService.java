@@ -8,6 +8,8 @@ import org.alberto.reservame.usuario.dtoUsuario.EmpleadoResponseDTO;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UsuarioService {
 
@@ -69,6 +71,15 @@ public class UsuarioService {
 
         Usuario usuarioGuardado = usuarioRepository.save(user);
         return toEmpleadoDTO(usuarioGuardado);
+    }
+
+    public List<EmpleadoResponseDTO> listarUsuarios(Boolean activo){
+        List<Usuario> usuariosList = usuarioRepository.findAll();
+
+        return usuariosList.stream()
+                .filter(em -> activo == null || em.isActivo() == activo)
+                .map(this::toEmpleadoDTO)
+                .toList();
     }
 
 

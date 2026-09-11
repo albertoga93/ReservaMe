@@ -13,6 +13,12 @@ public class LineaReservaResponseDTO {
     public LineaReservaResponseDTO() {
     }
 
+    public LineaReservaResponseDTO(int cantidad, BigDecimal precioUnitario, VarianteResponseDTO producto) {
+        this.cantidad = cantidad;
+        this.precioUnitario = precioUnitario;
+        this.producto = producto;
+    }
+
     public int getCantidad() {
         return cantidad;
     }

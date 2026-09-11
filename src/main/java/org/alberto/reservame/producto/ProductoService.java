@@ -16,10 +16,13 @@ public class ProductoService {
 
     private final ProductoRepository productoRepository;
     private final VarianteRepository varianteRepository;
+    private final ProductoMapper productoMapper;
 
-    public ProductoService(ProductoRepository productoRepository, VarianteRepository varianteRepository) {
+    public ProductoService(ProductoRepository productoRepository, VarianteRepository varianteRepository,
+                           ProductoMapper productoMapper) {
         this.productoRepository = productoRepository;
         this.varianteRepository = varianteRepository;
+        this.productoMapper = productoMapper;
     }
 
     public ProductoResponseDTO crearProducto(CrearProductoRequestDTO dto){
@@ -46,7 +49,7 @@ public class ProductoService {
 
         Producto productoGuardado = productoRepository.save(producto);
 
-        return toProductoDto(productoGuardado);
+        return productoMapper.toProductoDto(productoGuardado);
 
     }
 
@@ -89,7 +92,7 @@ public class ProductoService {
 
         Producto productoGuardado = productoRepository.save(producto);
 
-        return toProductoDto(productoGuardado);
+        return productoMapper.toProductoDto(productoGuardado);
 
     }
 
@@ -112,7 +115,7 @@ public class ProductoService {
 
         VarianteProducto varianteGuardada = varianteRepository.save(variante);
 
-        return toVarianteDto(varianteGuardada);
+        return productoMapper.toVarianteDto(varianteGuardada);
 
     }
 
@@ -149,7 +152,7 @@ public class ProductoService {
 
         VarianteProducto varianteGuardada = varianteRepository.save(variante);
 
-        return toVarianteDto(varianteGuardada);
+        return productoMapper.toVarianteDto(varianteGuardada);
     }
 
     public List<ProductoResponseDTO> listarProductos(String nombre, String categoria) {
@@ -161,7 +164,7 @@ public class ProductoService {
                                 pr.getCategoria().toLowerCase().contains(categoria.toLowerCase())))
                 .filter(pr -> nombre == null ||
                         pr.getName().toLowerCase().contains(nombre.toLowerCase()))
-                .map(pr -> this.toProductoDto(pr))
+                .map(pr -> productoMapper.toProductoDto(pr))
                 .toList();
 
         return existList;
@@ -175,38 +178,5 @@ public class ProductoService {
     }
 
 
-    //para convertir una instancia de producto en una responseProducto
-    private ProductoResponseDTO toProductoDto(Producto producto){
-        ProductoResponseDTO dto = new ProductoResponseDTO(
-                producto.getId(),
-                producto.getName(),
-                producto.getDescripcion(),
-                producto.getCategoria(),
-                producto.isActivo(),
-                producto.getFechaCreacion());
 
-        List<VarianteResponseDTO> variantesDTO = producto.getVariantesProducto().stream().
-                map(variante -> this.toVarianteDto(variante))
-                .toList();
-        dto.setVariantes(variantesDTO);
-
-        return dto;
-    }
-
-
-    //Para convertir una instancia de variante en una VarianteResponseDto
-    private VarianteResponseDTO toVarianteDto(VarianteProducto variante){
-        VarianteResponseDTO dto = new VarianteResponseDTO(
-                variante.getId(),
-                variante.getName(),
-                variante.getUnidadMedida(),
-                variante.getSku(),
-                variante.getPrecio(),
-                variante.getStock(),
-                variante.isActivo(),
-                variante.getFechaCreacion(),
-                variante.getFechaActualizacion()
-        );
-        return dto;
-    }
 }
