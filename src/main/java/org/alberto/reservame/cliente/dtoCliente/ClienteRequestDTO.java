@@ -7,6 +7,7 @@ public class ClienteRequestDTO {
     @NotBlank(message = "El nombre no puede estar vacío")
     private String nombre;
 
+    @NotBlank(message = "El email no puede estar vacío")
     private String email;
 
     @NotBlank(message = "El teléfono no puede estar vacío")
@@ -15,11 +16,11 @@ public class ClienteRequestDTO {
     public ClienteRequestDTO() {
     }
 
-    public String getName() {
+    public String getNombre() {
         return nombre;
     }
 
-    public void setName(String nombre) {
+    public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 

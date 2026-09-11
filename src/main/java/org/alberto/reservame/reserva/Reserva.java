@@ -6,6 +6,7 @@ import org.alberto.reservame.usuario.Usuario;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -43,8 +44,8 @@ public class Reserva {
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 
-    @OneToMany(mappedBy = "reserva")
-    private List<LineaReserva> lineasReserva;
+    @OneToMany(mappedBy = "reserva", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<LineaReserva> lineasReserva = new ArrayList<>();
 
 
     //Constructor vacio para hibernate
