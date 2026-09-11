@@ -15,10 +15,12 @@ public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
+    private final UsuarioMapper usuarioMapper;
 
-    public UsuarioService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
+    public UsuarioService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder, UsuarioMapper usuarioMapper) {
         this.usuarioRepository = usuarioRepository;
         this.passwordEncoder = passwordEncoder;
+        this.usuarioMapper = usuarioMapper;
     }
 
     public EmpleadoResponseDTO crearEmpleado(CrearEmpleadoRequestDTO dto) {
@@ -36,7 +38,7 @@ public class UsuarioService {
 
         Usuario usuarioGuardado = usuarioRepository.save(newUsuario);
 
-        return toEmpleadoDTO(usuarioGuardado);
+        return usuarioMapper.toEmpleadoDTO(usuarioGuardado);
 
     }
 
@@ -54,7 +56,7 @@ public class UsuarioService {
         user.setActivo(false);
 
         Usuario usuarioGuardado = usuarioRepository.save(user);
-        return toEmpleadoDTO(usuarioGuardado);
+        return usuarioMapper.toEmpleadoDTO(usuarioGuardado);
     }
 
 
@@ -70,7 +72,7 @@ public class UsuarioService {
         user.setActivo(true);
 
         Usuario usuarioGuardado = usuarioRepository.save(user);
-        return toEmpleadoDTO(usuarioGuardado);
+        return usuarioMapper.toEmpleadoDTO(usuarioGuardado);
     }
 
     public List<EmpleadoResponseDTO> listarUsuarios(Boolean activo){
@@ -78,21 +80,13 @@ public class UsuarioService {
 
         return usuariosList.stream()
                 .filter(em -> activo == null || em.isActivo() == activo)
-                .map(this::toEmpleadoDTO)
+                .map(usuarioMapper::toEmpleadoDTO)
                 .toList();
     }
 
 
 
-    //metodos para convertir en DTO
 
-    private EmpleadoResponseDTO toEmpleadoDTO(Usuario usuario){
 
-        return new EmpleadoResponseDTO(usuario.getId(),
-                usuario.getNombre(),
-                usuario.getUsername(),
-                usuario.getRol().toString(),
-                usuario.isActivo(),
-                usuario.getFechaCreacion());
-    }
+
 }

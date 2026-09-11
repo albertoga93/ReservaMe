@@ -13,7 +13,7 @@ public class DetalleReservaResponseDTO {
     private String codigoPublico;
     private ClienteResponseDTO cliente;
     private LocalDateTime fechaRecogida;
-    private Estado estado;
+    private String estado;
     private String notas;
     private EmpleadoResponseDTO empleado;
     private List<LineaReservaResponseDTO> listLineaReserva;
@@ -21,7 +21,16 @@ public class DetalleReservaResponseDTO {
     public DetalleReservaResponseDTO() {
     }
 
-
+    public DetalleReservaResponseDTO(Long id, String codigoPublico, ClienteResponseDTO cliente, LocalDateTime fechaRecogida, String estado, String notas, EmpleadoResponseDTO empleado, List<LineaReservaResponseDTO> listLineaReserva) {
+        this.id = id;
+        this.codigoPublico = codigoPublico;
+        this.cliente = cliente;
+        this.fechaRecogida = fechaRecogida;
+        this.estado = estado;
+        this.notas = notas;
+        this.empleado = empleado;
+        this.listLineaReserva = listLineaReserva;
+    }
 
     public Long getId() {
         return id;
@@ -63,11 +72,11 @@ public class DetalleReservaResponseDTO {
         this.notas = notas;
     }
 
-    public Estado getEstado() {
+    public String getEstado() {
         return estado;
     }
 
-    public void setEstado(Estado estado) {
+    public void setEstado(String estado) {
         this.estado = estado;
     }
 
