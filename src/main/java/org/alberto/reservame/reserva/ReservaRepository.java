@@ -7,4 +7,5 @@ import java.util.Optional;
 public interface ReservaRepository extends JpaRepository<Reserva, Long> {
 
     Optional<Reserva> findByIdPublico(String idPublico);
+
 }

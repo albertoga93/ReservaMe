@@ -2,6 +2,7 @@ package org.alberto.reservame.usuario;
 
 
 import jakarta.validation.Valid;
+import org.alberto.reservame.usuario.dtoUsuario.CambiarPasswoodDTO;
 import org.alberto.reservame.usuario.dtoUsuario.CrearEmpleadoRequestDTO;
 import org.alberto.reservame.usuario.dtoUsuario.EmpleadoResponseDTO;
 import org.springframework.http.HttpStatus;
@@ -43,6 +44,13 @@ public class UsuarioController {
     @GetMapping()
     public ResponseEntity<List<EmpleadoResponseDTO>> listarUsuarios(@RequestParam(required = false) Boolean activo){
         return ResponseEntity.ok().body(usuarioService.listarUsuarios(activo));
+    }
+
+    @PreAuthorize("hasAnyRole('DUENO', 'EMPLEADO')")
+    @PatchMapping("/me/password")
+    public ResponseEntity<Void> cambiarPassword(@Valid @RequestBody CambiarPasswoodDTO dto){
+        usuarioService.cambiarContrasena(dto);
+        return ResponseEntity.noContent().build();
     }
 
 

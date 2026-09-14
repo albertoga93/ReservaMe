@@ -3,8 +3,10 @@ package org.alberto.reservame.usuario;
 import org.alberto.reservame.exception.PasswordException;
 import org.alberto.reservame.exception.RecursoNoEncontradoException;
 import org.alberto.reservame.exception.UsuarioExistenteException;
+import org.alberto.reservame.usuario.dtoUsuario.CambiarPasswoodDTO;
 import org.alberto.reservame.usuario.dtoUsuario.CrearEmpleadoRequestDTO;
 import org.alberto.reservame.usuario.dtoUsuario.EmpleadoResponseDTO;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -85,6 +87,27 @@ public class UsuarioService {
     }
 
 
+    public void cambiarContrasena (CambiarPasswoodDTO dto){
+        Usuario usuario = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+
+
+        if(!passwordEncoder.matches(dto.getPasswordActual(), usuario.getPassword())){
+            throw new IllegalArgumentException("La contraseña actual no es correcta");
+        }
+
+        if(!dto.getPassword().equals(dto.getConfirmarPassword())){
+            throw new IllegalArgumentException("Las contraseñas no coinciden");
+        }
+
+        if(dto.getPasswordActual().equals(dto.getPassword())){
+            throw new IllegalArgumentException("La nueva contraseña debe ser distinta de la actual");
+        }
+
+        usuario.setPassword(passwordEncoder.encode(dto.getPassword()));
+        usuarioRepository.save(usuario);
+
+    }
 
 
 

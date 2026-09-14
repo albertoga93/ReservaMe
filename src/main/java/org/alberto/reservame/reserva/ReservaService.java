@@ -8,14 +8,12 @@ import org.alberto.reservame.exception.OperacionNoPermitidaException;
 import org.alberto.reservame.exception.RecursoNoEncontradoException;
 import org.alberto.reservame.producto.VarianteProducto;
 import org.alberto.reservame.producto.VarianteRepository;
-import org.alberto.reservame.reserva.dtoReserva.ComprobarReservaResponseDTO;
-import org.alberto.reservame.reserva.dtoReserva.CrearReservaRequestDTO;
-import org.alberto.reservame.reserva.dtoReserva.DetalleReservaResponseDTO;
-import org.alberto.reservame.reserva.dtoReserva.LineaReservaRequestDTO;
+import org.alberto.reservame.reserva.dtoReserva.*;
 import org.alberto.reservame.usuario.Usuario;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.*;
 
 
@@ -111,8 +109,94 @@ public class ReservaService {
         return reservaMapper.toDetalleReservaResponseDTO(reserva);
     }
 
+    public List<ReservaResponseDTO> listarReservas(LocalDate fecharecogida, LocalDate desde, LocalDate hasta, Estado estado){
+
+        if(fecharecogida != null && (desde != null || hasta != null)){
+            throw new IllegalArgumentException("No se puede combinar ambos filro de fechas");
+        }
+
+        List<Reserva> reservaList = reservaRepository.findAll();
+
+        return reservaList.stream()
+                .filter(r -> fecharecogida == null || r.getFechaRecogida().toLocalDate().equals(fecharecogida))
+                .filter(r -> desde == null || !r.getFechaRecogida().toLocalDate().isBefore(desde))
+                .filter(r -> hasta == null || !r.getFechaRecogida().toLocalDate().isAfter(hasta))
+                .filter(r -> estado != null || (r.getEstado() != Estado.CANCELADA && r.getEstado() != Estado.ENTREGADA))
+                .filter(r -> estado == null || r.getEstado().equals(estado))
+                .sorted(Comparator.comparing(Reserva::getFechaRecogida))
+                .map(reservaMapper::toReservaResponseDTO)
+                .toList();
+
+    }
 
 
+    public ReservaResponseDTO cambiarEstadoLista(Long id, EditarEstadoReservaRequestDTO dto){
+
+        Reserva reserva = reservaRepository.findById(id)
+                .orElseThrow(() -> new RecursoNoEncontradoException("La reserva no existe"));
+
+        if (reserva.getEstado() == Estado.PENDIENTE && dto.getEstado() == Estado.LISTA) {
+            reserva.setEstado(dto.getEstado());
+        } else {
+            throw new OperacionNoPermitidaException("Transición de estado no permitida");
+        }
+
+        Reserva reservaActualizada = reservaRepository.save(reserva);
+        return reservaMapper.toReservaResponseDTO(reservaActualizada);
+
+
+    }
+
+    @Transactional
+    public ReservaResponseDTO cancelarReserva(Long id){
+        Reserva reserva = reservaRepository.findById(id)
+                .orElseThrow(() -> new RecursoNoEncontradoException("La reserva no existe"));
+
+        if (reserva.getEstado() == Estado.ENTREGADA) {
+            throw new OperacionNoPermitidaException("No se puede cancelar una reserva ya entregada");
+        }
+
+        if (reserva.getEstado() == Estado.CANCELADA) {
+            throw new OperacionNoPermitidaException("La reserva ya está cancelada");
+        }
+
+        List<LineaReserva> listLineas = reserva.getLineasReserva();
+
+        for(LineaReserva linea : listLineas){
+            VarianteProducto variante = linea.getProducto();
+            variante.setStock(linea.getCantidad() + variante.getStock());
+
+        }
+
+        reserva.setEstado(Estado.CANCELADA);
+
+        Reserva reservaActualizada = reservaRepository.save(reserva);
+
+        return reservaMapper.toReservaResponseDTO(reservaActualizada);
+    }
+
+    public ReservaResponseDTO recogerReserva(RecogerReservaRequestDTO dto){
+        Reserva reserva = reservaRepository.findByIdPublico(dto.getCodigoPublico())
+                .orElseThrow(()-> new RecursoNoEncontradoException("Reserva no encontrada"));
+
+        if (reserva.getEstado() == Estado.ENTREGADA) {
+            throw new OperacionNoPermitidaException("La reserva ya ha sido retirada");
+        }
+
+        if (reserva.getEstado() == Estado.CANCELADA) {
+            throw new OperacionNoPermitidaException("No se puede recoger una reserva cancelada");
+        }
+
+        if(reserva.getEstado() == Estado.PENDIENTE){
+            throw new OperacionNoPermitidaException("La reserva aun no esta disponible para recogida");
+        }
+
+        reserva.setEstado(Estado.ENTREGADA);
+
+        Reserva reservaActualizada = reservaRepository.save(reserva);
+        return reservaMapper.toReservaResponseDTO(reservaActualizada);
+
+    }
 
 
 
